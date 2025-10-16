@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(frontendBuildPath));
 
   // All unmatched routes serve index.html
-  app.get("/*", (req, res) => {
+  app.get("/:path*", (req, res) => {
     res.sendFile(path.join(frontendBuildPath, "index.html"));
   });
 } else {
