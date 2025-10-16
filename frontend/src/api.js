@@ -1,2 +1,1 @@
-// frontend/src/api.js
-export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000/api";
+export const BACKEND_URL = "https://visual-product-backend.onrender.com/api";
