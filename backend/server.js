@@ -35,17 +35,17 @@ mongoose
 app.use("/api/products", productRoutes);
 
 // ---------------------- Serve React Frontend ----------------------
-if (process.env.NODE_ENV === "production") {
-  const frontendBuildPath = path.join(__dirname, "../frontend/build");
-  app.use(express.static(frontendBuildPath));
+// if (process.env.NODE_ENV === "production") {
+//   const frontendBuildPath = path.join(__dirname, "../frontend/build");
+//   app.use(express.static(frontendBuildPath));
 
-  // ✅ Fixed route
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendBuildPath, "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => res.send("API is running..."));
-}
+//   // ✅ Fixed route
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(frontendBuildPath, "index.html"));
+//   });
+// } else {
+//   app.get("/", (req, res) => res.send("API is running..."));
+// }
 
 
 // ---------------------- Start Server ----------------------
