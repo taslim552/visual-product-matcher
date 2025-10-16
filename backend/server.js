@@ -39,14 +39,14 @@ if (process.env.NODE_ENV === "production") {
   const frontendBuildPath = path.join(__dirname, "../frontend/build");
   app.use(express.static(frontendBuildPath));
 
-  // Catch-all route to serve React's index.html
-  app.get("/*", (req, res) => {
+  // ✅ Fixed route
+  app.get("*", (req, res) => {
     res.sendFile(path.join(frontendBuildPath, "index.html"));
   });
 } else {
-  // Dev mode test route
   app.get("/", (req, res) => res.send("API is running..."));
 }
+
 
 // ---------------------- Start Server ----------------------
 const PORT = process.env.PORT || 5000;
