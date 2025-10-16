@@ -40,18 +40,20 @@ mongoose
 app.use("/api/products", productRoutes);
 
 // ---------------------- Serve React Frontend ----------------------
+// Serve React frontend in production
 if (process.env.NODE_ENV === "production") {
   const frontendBuildPath = path.join(__dirname, "../frontend/build");
   app.use(express.static(frontendBuildPath));
 
-  // Serve index.html for all unmatched routes
-  app.get("*", (req, res) => {
+  // All unmatched routes serve index.html
+  app.get("/*", (req, res) => {
     res.sendFile(path.join(frontendBuildPath, "index.html"));
   });
 } else {
   // Dev mode test route
   app.get("/", (req, res) => res.send("API is running..."));
 }
+
 
 // ---------------------- Start Server ----------------------
 const PORT = process.env.PORT || 5000;
