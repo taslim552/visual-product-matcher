@@ -1,10 +1,120 @@
+// // backend/server.js
+// import express from "express";
+// import cors from "cors";
+// import mongoose from "mongoose";
+// import path from "path";
+// import productRoutes from "./routes/productRoutes.js";
+// import { fileURLToPath } from "url";
+
+// // __dirname workaround for ES modules
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+// const app = express();
+
+// // Middleware
+// app.use(express.json());
+// app.use(cors());
+
+// // Serve uploaded images statically
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// // Connect to MongoDB
+// mongoose
+//   .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/visual_product_matcher", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("✅ MongoDB connected"))
+//   .catch((err) => console.log("❌ MongoDB connection error:", err));
+
+// // API Routes
+// app.use("/api/products", productRoutes);
+
+// // Serve React frontend in production
+// if (process.env.NODE_ENV === "production") {
+//   const frontendBuildPath = path.join(__dirname, "../frontend/build");
+//   app.use(express.static(frontendBuildPath));
+
+//   // All unmatched routes serve index.html
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(frontendBuildPath, "index.html"));
+//   });
+// } else {
+//   // Dev mode test route
+//   app.get("/", (req, res) => res.send("API is running..."));
+// }
+
+// // Start server
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// // backend/server.js
+// import express from "express";
+// import cors from "cors";
+// import mongoose from "mongoose";
+// import path from "path";
+// import productRoutes from "./routes/productRoutes.js";
+// import { fileURLToPath } from "url";
+
+// // __dirname workaround for ES modules
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+// const app = express();
+
+// // Middleware
+// app.use(express.json());
+// app.use(cors());
+
+// // Serve uploaded images statically
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// // Connect to MongoDB
+// mongoose
+//   .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/visual_product_matcher", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("✅ MongoDB connected"))
+//   .catch((err) => console.log("❌ MongoDB connection error:", err));
+
+// // API Routes
+// app.use("/api/products", productRoutes);
+
+// // Serve React frontend in production
+// if (process.env.NODE_ENV === "production") {
+//   const frontendBuildPath = path.join(__dirname, "../frontend/build");
+//   app.use(express.static(frontendBuildPath));
+
+//   // All unmatched routes serve index.html
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(frontendBuildPath, "index.html"));
+//   });
+// } else {
+//   // Dev mode test route
+//   app.get("/", (req, res) => res.send("API is running..."));
+// }
+
+
+
+// // Start server
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+
+
 // backend/server.js
+import 'dotenv/config'; 
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import path from "path";
 import productRoutes from "./routes/productRoutes.js";
+import dotenv from "dotenv";
 import { fileURLToPath } from "url";
+
+// Load environment variables from .env
+dotenv.config();
 
 // __dirname workaround for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -12,31 +122,34 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Middleware
+// ---------------------- Middleware ----------------------
 app.use(express.json());
 app.use(cors());
 
 // Serve uploaded images statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Connect to MongoDB
+// ---------------------- MongoDB Connection ----------------------
+const mongoURI =
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/visual_product_matcher";
+
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/visual_product_matcher", {
+  .connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.log("❌ MongoDB connection error:", err));
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// API Routes
+// ---------------------- API Routes ----------------------
 app.use("/api/products", productRoutes);
 
-// Serve React frontend in production
+// ---------------------- Serve React Frontend ----------------------
 if (process.env.NODE_ENV === "production") {
   const frontendBuildPath = path.join(__dirname, "../frontend/build");
   app.use(express.static(frontendBuildPath));
 
-  // All unmatched routes serve index.html
+  // Serve index.html for all unmatched routes
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendBuildPath, "index.html"));
   });
@@ -45,6 +158,6 @@ if (process.env.NODE_ENV === "production") {
   app.get("/", (req, res) => res.send("API is running..."));
 }
 
-// Start server
+// ---------------------- Start Server ----------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
